@@ -1,0 +1,90 @@
+# Privacy Guard v2 hosts 兜底（bind mount 到 /system/etc/hosts，不改物理分区）
+# 仅列入代码级验证的遥测/上报域名；账号/支付/商店/升级/推送/功能域名一律不封（见 README）
+# 38 个域名全部 IPv4/IPv6 双栈回环，防止 AAAA 绕过
+
+
+# === A. 联通 SystemHelper 上报平台（明文 HTTP，代码级实锤） ===
+127.0.0.1 dm.wo.com.cn
+::1 dm.wo.com.cn
+
+# === B. 中国区 stsdk 监控遥测族（v1 保留） ===
+127.0.0.1 monitor-stsdk.vivo.com.cn
+::1 monitor-stsdk.vivo.com.cn
+127.0.0.1 monitor-newdev-stsdk.vivo.com.cn
+::1 monitor-newdev-stsdk.vivo.com.cn
+127.0.0.1 onrt-stsdk.vivo.com.cn
+::1 onrt-stsdk.vivo.com.cn
+127.0.0.1 onrt-newdev-stsdk.vivo.com.cn
+::1 onrt-newdev-stsdk.vivo.com.cn
+127.0.0.1 ort-stsdk.vivo.com.cn
+::1 ort-stsdk.vivo.com.cn
+127.0.0.1 ort-newdev-stsdk.vivo.com.cn
+::1 ort-newdev-stsdk.vivo.com.cn
+127.0.0.1 pnrt-stsdk.vivo.com.cn
+::1 pnrt-stsdk.vivo.com.cn
+127.0.0.1 pnrt-newdev-stsdk.vivo.com.cn
+::1 pnrt-newdev-stsdk.vivo.com.cn
+127.0.0.1 prt-stsdk.vivo.com.cn
+::1 prt-stsdk.vivo.com.cn
+127.0.0.1 prt-newdev-stsdk.vivo.com.cn
+::1 prt-newdev-stsdk.vivo.com.cn
+127.0.0.1 moni-onrt-stsdk.vivo.com.cn
+::1 moni-onrt-stsdk.vivo.com.cn
+127.0.0.1 moni-ort-stsdk.vivo.com.cn
+::1 moni-ort-stsdk.vivo.com.cn
+127.0.0.1 moni-pnrt-stsdk.vivo.com.cn
+::1 moni-pnrt-stsdk.vivo.com.cn
+127.0.0.1 moni-prt-stsdk.vivo.com.cn
+::1 moni-prt-stsdk.vivo.com.cn
+127.0.0.1 stsdk.vivo.com.cn
+::1 stsdk.vivo.com.cn
+
+# === C. 系统日志/异常上报（v1 保留） ===
+127.0.0.1 onelog.vivo.com.cn
+::1 onelog.vivo.com.cn
+127.0.0.1 ue.vivo.com.cn
+::1 ue.vivo.com.cn
+
+# === D. 遥测 SDK 统计/寻址主机（v2 新增；内嵌 httpdns 库专用，非系统 DNS 服务） ===
+127.0.0.1 vhs.wwstat.com
+::1 vhs.wwstat.com
+127.0.0.1 vhs.vivo.com.cn
+::1 vhs.vivo.com.cn
+
+# === E. 海外 stsdk 遥测族（v2 新增，vivoglobal 监控域，33 个系统包引用） ===
+127.0.0.1 asia-commonitor-stsdk.vivoglobal.com
+::1 asia-commonitor-stsdk.vivoglobal.com
+127.0.0.1 asia-comonrt-stsdk.vivoglobal.com
+::1 asia-comonrt-stsdk.vivoglobal.com
+127.0.0.1 asia-comort-stsdk.vivoglobal.com
+::1 asia-comort-stsdk.vivoglobal.com
+127.0.0.1 asia-compnrt-stsdk.vivoglobal.com
+::1 asia-compnrt-stsdk.vivoglobal.com
+127.0.0.1 asia-comprt-stsdk.vivoglobal.com
+::1 asia-comprt-stsdk.vivoglobal.com
+127.0.0.1 asia-exstsdk.vivoglobal.com
+::1 asia-exstsdk.vivoglobal.com
+127.0.0.1 in-monitor-stsdk.vivoglobal.com
+::1 in-monitor-stsdk.vivoglobal.com
+127.0.0.1 in-onrt-stsdk.vivoglobal.com
+::1 in-onrt-stsdk.vivoglobal.com
+127.0.0.1 in-ort-stsdk.vivoglobal.com
+::1 in-ort-stsdk.vivoglobal.com
+127.0.0.1 in-pnrt-stsdk.vivoglobal.com
+::1 in-pnrt-stsdk.vivoglobal.com
+127.0.0.1 in-prt-stsdk.vivoglobal.com
+::1 in-prt-stsdk.vivoglobal.com
+127.0.0.1 ru-commonitor-stsdk.vivoglobal.com
+::1 ru-commonitor-stsdk.vivoglobal.com
+127.0.0.1 ru-comonrt-stsdk.vivoglobal.com
+::1 ru-comonrt-stsdk.vivoglobal.com
+127.0.0.1 ru-comort-stsdk.vivoglobal.com
+::1 ru-comort-stsdk.vivoglobal.com
+127.0.0.1 ru-compnrt-stsdk.vivoglobal.com
+::1 ru-compnrt-stsdk.vivoglobal.com
+127.0.0.1 ru-comprt-stsdk.vivoglobal.com
+::1 ru-comprt-stsdk.vivoglobal.com
+127.0.0.1 ru-exstsdk.vivoglobal.com
+::1 ru-exstsdk.vivoglobal.com
+127.0.0.1 stsdk-config.vivoglobal.com
+::1 stsdk-config.vivoglobal.com

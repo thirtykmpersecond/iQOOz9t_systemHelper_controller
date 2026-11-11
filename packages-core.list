@@ -1,0 +1,20 @@
+# 核心停用清单（低风险，模块默认执行）
+# 每行一个包名，# 开头为注释。停用方式 pm suspend，恢复：pm unsuspend <包名>
+# 注意：共享 system uid(1000) 的包 Android 框架不允许 suspend（pm 返回成功也会被忽略），
+#       保留在清单中无害，且系统更新后若限制变化可自动生效；其遥测改由 hosts 阻断。
+
+# 联通终端管理/轨迹上报（代码级实锤，独立 uid，suspend 实测有效）
+com.mobiletools.systemhelper
+# 系统日志上报（uid 1000，suspend 不保证生效，主要靠 hosts）
+com.android.bbklog
+com.bbk.iqoo.logsystem
+# 快应用引擎（静默安装/广告载体，独立 uid，实测有效）
+com.vivo.hybrid
+# 锁屏杂志广告（独立 uid，实测有效）
+com.vivo.magazine
+# UPnP 服务（局域网媒体投送，独立 uid，实测有效）
+com.vivo.upnpserver
+# vivo 统一遥测/配置中枢（uid 1000 persistent，suspend 不保证生效，主要靠 hosts）
+com.vivo.abe
+# vivo 系统守护（uid 1000 persistent，pm suspend 会失败，遥测靠 hosts；不建议 disable）
+com.vivo.daemonService

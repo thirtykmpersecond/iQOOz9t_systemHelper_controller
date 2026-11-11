@@ -1,0 +1,16 @@
+# 可选停用清单（有功能代价，默认不执行）
+# 需要启用时，把对应行复制到 packages-core.list，或在 KernelSU 管理器里编辑本模块后重启/重新 late-load
+#
+# 推送通道：停用后所有 App 的系统推送通知可能失效
+#com.vivo.pushservice
+# 应用商店：停用后不能再用商店更新应用（请先备好替代商店）
+#com.bbk.appstore
+# vivo 浏览器：请先安装替代浏览器
+#com.vivo.browser
+# 安装过滤/反诈扫描：停用后未知 APK 安装拦截消失，支付类 App 可能报环境风险
+#com.vivo.appfilter
+# i管家/安全中心：同上，谨慎
+#com.iqoo.secure
+#com.vivo.safecenter
+# 查找手机：停用后官方远程定位/锁机/抹机通道关闭（不登录 vivo 账号时本就不激活）
+#com.vivo.findphone
