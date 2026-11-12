@@ -1,6 +1,7 @@
 # 强制卸载清单（对 user 0 卸载；系统分区 APK 保留，可恢复）
 # 适用对象：pm suspend 无法阻止其采集的系统包（实测 SystemHelper 挂起后仍持续写库）
-# 机制：模块每次执行 action.sh 时检测，若包被 OTA 等机制恢复安装，则自动再次卸载
+# 机制：模块每次执行 action.sh 时检测，若包被 OTA 等机制恢复安装，
+#       先 root unsuspend 清历史挂起标记，再自动卸载（v2.1.1）
 # 手动回滚：cmd package install-existing --user 0 <包名>
 # 模块卸载时 uninstall.sh 也会自动恢复本清单中的包
 com.mobiletools.systemhelper

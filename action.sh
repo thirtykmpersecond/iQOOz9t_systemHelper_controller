@@ -16,6 +16,9 @@ if [ -f "$MODDIR/packages-uninstall.list" ]; then
   while IFS= read -r pkg; do
     case "$pkg" in ''|\#*) continue ;; esac
     if pm list packages --user 0 2>/dev/null | grep -q "^package:$pkg$"; then
+      # 先清历史 suspend 标记再卸载：shell(uid2000) 身份 unsuspend 是空操作，
+      # 本脚本以 root 运行才生效；否则卸载后 restrictions 会残留 suspended=true 脏标记
+      pm unsuspend "$pkg" >/dev/null 2>&1
       if pm uninstall --user 0 "$pkg" >/dev/null 2>&1; then
         log OK "uninstall-user0 $pkg"
       else

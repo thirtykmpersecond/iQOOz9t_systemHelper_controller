@@ -14,6 +14,11 @@
 
 ## 版本历史
 
+### v2.1.1
+
+- 修复状态残留：强制卸载前先以 root 执行 `pm unsuspend`。实测 shell(uid 2000) 身份的 unsuspend 对系统包是空操作（返回成功但 suspended 仍为 true），只有 root 生效；若跳过这一步，`uninstall --user 0` 后 package-restrictions.xml 会留下 `installed=false suspended=true` 的脏标记
+- 11-12 设备验证：清理序列 `install-existing → root unsuspend → uninstall` 后终态 `installed=false suspended=false`，ABX 解析确认该包条目只剩 installed 标记，无 suspend 数据
+
 ### v2.1.0
 
 - 新增 `packages-uninstall.list` 强制卸载机制：每次执行先检测清单内系统包是否对 user 0 安装，若被 OTA 等机制复活则自动 `pm uninstall --user 0`
