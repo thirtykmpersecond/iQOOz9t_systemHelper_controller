@@ -1,6 +1,6 @@
 id=privacy.guard.iqoo
 name=Privacy Guard for iQOO (late-load)
-version=v2.1.1
-versionCode=4
+version=v2.1.2
+versionCode=5
 author=thirtykmpersecond
-description=停用/卸载厂商遥测组件并屏蔽上报域名。v2.1 新增 SystemHelper 自动检测卸载（OTA 复活后自动再次卸载，root shell 直接执行 pm，无需模拟 adb）；v2.1.1 卸载前先 root unsuspend，清除 restrictions 中的 suspend 残留标记。KernelSU late-load 设计，全部可逆。
+description=停用/卸载厂商遥测组件并屏蔽上报域名。v2.1 自动检测卸载 SystemHelper；v2.1.1 卸载前 root unsuspend 清残留；v2.1.2 修复管理器「执行」按钮无输出（日志双写 stdout + 执行摘要）。KernelSU late-load 设计，全部可逆。

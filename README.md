@@ -14,6 +14,12 @@
 
 ## 版本历史
 
+### v2.1.2
+
+- 修复 KSU 管理器「执行」按钮点击后终端空白：`log()` 改为文件与 stdout 双写，管理器 runAction 终端可实时看到每一步；结尾新增执行摘要（卸载/挂起计数、警告数、hosts 状态、日志路径）
+- 实测依据：管理器日志 `KernelSU: Module runAction result` 证明按钮本身正常，空白只因旧版脚本把全部输出重定向进文件并吞掉命令输出
+- 开机阶段（late-load/service/boot-completed）多产生的 stdout 由 ksud 回收，无副作用
+
 ### v2.1.1
 
 - 修复状态残留：强制卸载前先以 root 执行 `pm unsuspend`。实测 shell(uid 2000) 身份的 unsuspend 对系统包是空操作（返回成功但 suspended 仍为 true），只有 root 生效；若跳过这一步，`uninstall --user 0` 后 package-restrictions.xml 会留下 `installed=false suspended=true` 的脏标记
