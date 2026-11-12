@@ -2,9 +2,8 @@
 # 每行一个包名，# 开头为注释。停用方式 pm suspend，恢复：pm unsuspend <包名>
 # 注意：共享 system uid(1000) 的包 Android 框架不允许 suspend（pm 返回成功也会被忽略），
 #       保留在清单中无害，且系统更新后若限制变化可自动生效；其遥测改由 hosts 阻断。
+# SystemHelper 已移至 packages-uninstall.list（suspend 实测无法阻止其采集，改用卸载）。
 
-# 联通终端管理/轨迹上报（代码级实锤，独立 uid，suspend 实测有效）
-com.mobiletools.systemhelper
 # 系统日志上报（uid 1000，suspend 不保证生效，主要靠 hosts）
 com.android.bbklog
 com.bbk.iqoo.logsystem

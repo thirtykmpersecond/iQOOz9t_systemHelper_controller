@@ -10,6 +10,21 @@ log() { echo "$(date '+%Y-%m-%d %H:%M:%S') [$1] $2" >> "$LOG"; }
 
 log INFO "===== privacy-guard run, mode=${KSU_RUNTIME_MODE:-unknown}, late=${KSU_LATE_LOAD:-0} ====="
 
+# 0) 强制卸载清单（针对 suspend 无法阻止采集的系统包，如 SystemHelper）
+# 仅对 user 0 标记卸载，系统分区 APK 保留；OTA 后若复活，此处自动再次卸载
+if [ -f "$MODDIR/packages-uninstall.list" ]; then
+  while IFS= read -r pkg; do
+    case "$pkg" in ''|\#*) continue ;; esac
+    if pm list packages --user 0 2>/dev/null | grep -q "^package:$pkg$"; then
+      if pm uninstall --user 0 "$pkg" >/dev/null 2>&1; then
+        log OK "uninstall-user0 $pkg"
+      else
+        log WARN "uninstall failed: $pkg"
+      fi
+    fi
+  done < "$MODDIR/packages-uninstall.list"
+fi
+
 # 1) 停用核心清单中的包（pm suspend：可恢复，状态持久化在 /data）
 if [ -f "$MODDIR/packages-core.list" ]; then
   while IFS= read -r pkg; do
