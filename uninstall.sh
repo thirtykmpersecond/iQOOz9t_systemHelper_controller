@@ -24,4 +24,8 @@ fi
 if mount | grep -q ' /system/etc/hosts '; then
   umount /system/etc/hosts 2>/dev/null
 fi
+
+# 恢复静默重启默认（启用态）；属性原本不存在，false 与缺省语义完全等价
+setprop persist.rms.disable_silent false 2>/dev/null
+
 echo "$(date) uninstall: done" >> "$LOG"

@@ -53,7 +53,16 @@ if [ -f "$MODDIR/packages-core.list" ]; then
   done < "$MODDIR/packages-core.list"
 fi
 
-# 2) hosts 兜底屏蔽（bind mount，不修改 /system 物理文件；late-load 前的开机窗口由 suspend 兜底）
+# 2) 关闭 vivo 静默重启（NRMS 168h 周期无人值守重启，会清掉 LKM root）
+# kill switch：com.vivo.sps 唯一读取点，写 /data/property，不碰系统分区；回滚见 uninstall.sh
+setprop persist.rms.disable_silent true 2>/dev/null
+if [ "$(getprop persist.rms.disable_silent)" = "true" ]; then
+  log OK "silent-reboot kill switch: on"
+else
+  log WARN "setprop persist.rms.disable_silent failed"
+fi
+
+# 3) hosts 兜底屏蔽（bind mount，不修改 /system 物理文件；late-load 前的开机窗口由 suspend 兜底）
 HOSTS_STATE=skip
 if [ -f "$HOSTS_SRC" ]; then
   if mount | grep -q " $HOSTS_DST "; then
@@ -72,7 +81,7 @@ if [ -f "$HOSTS_SRC" ]; then
   fi
 fi
 
-# 3) 执行摘要（KSU 管理器「执行」按钮的终端里可直接看到，同时写入日志文件）
+# 4) 执行摘要（KSU 管理器「执行」按钮的终端里可直接看到，同时写入日志文件）
 log INFO "----------------------------------------"
 log INFO "Privacy Guard 执行完成："
 log INFO "  本次卸载 $CNT_UNINST 个（卸载清单另有 $CNT_CLEAN 个本就处于卸载态）"

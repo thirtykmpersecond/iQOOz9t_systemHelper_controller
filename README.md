@@ -2,17 +2,25 @@
 
 面向 KernelSU **late-load（越狱模式）**的隐私加固模块：卸载/停用厂商遥测组件，并通过 hosts 兜底阻断上报域名。全部操作可逆，不写系统分区、不依赖解锁 BL。
 
-## 它做三件事
+## 它做四件事
 
 1. **`pm uninstall --user 0` 强制卸载**（`packages-uninstall.list`）：针对 suspend 无法阻止采集的系统包（实测 SystemHelper 挂起后仍每 30–60 分钟写库）。只对主用户标记卸载，系统分区 APK 保留；模块每次执行时检测，若被 OTA 恢复安装则自动再次卸载
 2. **`pm suspend` 停用组件**（`packages-core.list`）：状态写入 `/data`，重启后依然有效；卸载模块时自动 `unsuspend` 恢复
 3. **hosts bind mount**：把自带 hosts 挂到 `/system/etc/hosts`（bind mount，不改物理分区），阻断已验证的遥测域名；late-load 失效期间由卸载/挂起状态兜底
+4. **静默重启 kill switch**：`setprop persist.rms.disable_silent true`，关闭 vivo NRMS 的 168h 周期无人值守内核重启（会清掉 LKM root）；卸载模块时回滚为 false
 
 > **为什么不需要"模拟 adb"**：`adb shell` 只是一个 uid 2000 的 shell，`pm` 命令实际由系统 PackageManagerService 执行。KSU 模块脚本以 root（uid 0）运行，是 shell 的权限超集，`pm uninstall --user 0` 可直接调用。
 
 触发时机：`late-load.sh`（late-load 阶段）、`service.sh`（late_start 服务）、`boot-completed.sh`（开机完成后加固，防 OTA 恢复），三者都调用 `action.sh`。
 
 ## 版本历史
+
+### v2.1.3
+
+- 新增静默重启 kill switch：每次 action.sh 以 root 写 `persist.rms.disable_silent=true`（落盘 /data/property，只写 /data，不碰引导分区）；`uninstall.sh` 回滚为 false
+- 背景：com.vivo.sps 的 NRMS 机构建了**从开机起算 168 小时（7 天）的检测闹钟**（本机实测队列中 2026-11-19 11:19 生效），条件满足后凌晨随机窗口 `PowerManager.reboot("silent")`，是完整内核重启且无需密码（unattended reboot），会清掉 late-load 的 kernelsu.ko
+- 全机唯一读取方是 sps 的一行 Java 判断（413 APK 扫描确认 init/native 层零引用），最坏后果只是该功能被关本身，无变砖路径
+- 注意：sps 配置在进程启动/云控刷新时读取该属性，setprop 后需重启 sps（或等下次重启）当前启动周期才生效；模块每次 late-load 阶段都重写，保证后续启动周期门控确定生效
 
 ### v2.1.2
 
